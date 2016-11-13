@@ -1,0 +1,83 @@
+1. The worst case time complexity for INSERT for my code would be if keys are equal at the end of aList.
+	
+	public void insert(K key, V value) throws KeyExistException
+	{
+		boolean insert = true;
+	
+		for(AListElement<K, V> element : aList){
+			if(element.getKey().equals(key)){
+				if(element.getDeleted() == false){
+					insert = false;
+					throw new KeyExistException("The key you are trying to insert already exists");
+				}
+			}
+		}
+		if(insert == true){
+			aList.add(new AListElement<K, V>(key, value));
+			size++;
+		}
+	}
+		
+My insert method runs on O(n) because boolean insert = true is just constant time. Then running through the for loop
+would make it run n times depending on how many elements are in aList.
+
+The equation would be (some constant) + n = O(n)
+
+
+
+2. The worst case time complexity for REMOVE for my code would be if the key it is looking for is at the end of the
+   list.
+   
+	public void remove(K key) throws KeyNonexistanceException
+	{
+		boolean removed = false;
+		for(AListElement<K, V> element : aList){
+			if(element.getKey().equals(key)){
+				if(element.getDeleted() == false){
+					removed = true;
+					element.setDeleted();
+					size--;
+				}
+			}
+		}
+		if(removed == false){
+			throw new KeyNonexistanceException("The key you are trying to remove doesn't exist");
+		}
+	}
+		
+My remove method runs on O(n) because boolean removed = false is just constant time. Then running through the for loop
+would make it run n times depending on how many elements are in aList.
+
+The equation would be (some constant) + n = O(n)
+
+
+
+3. The worst case time complexity for INTERSECTION for my code would be if the keys that are finding the key and value that matches at the end
+   of each list when comparing.
+   
+    public AList<K, V> intersection(AList<K, V> otherList) throws KeyExistException, KeyAreSameException, KeyNonexistanceException
+	{
+		AList<K, V> intersectionList = new AList<K, V>();
+	
+		for(AListElement<K, V> element : aList){
+			for(AListElement<K, V> element2 : otherList.aList){
+				if(element.getDeleted() == false && element2.getDeleted() == false){
+					if(element.getKey().equals(element2.getKey())){
+						if(element.getValue().equals(element2.getValue()))
+							intersectionList.insert(element2.getKey(), element2.getValue());
+						}
+						else{
+							throw new KeyAreSameException("Key are the same, values are different");
+						}
+					}
+				}
+			}
+		}
+		return intersectionList;
+	}
+	
+The running time of intersection is O(n^2) because creating an aList would take constant time, and then running through all elements in aList
+would take n time and then running through all elements in otherList would take another n time. Because it is a nested for loop, it will take
+n * n times which would be n^2 or O(n^2).
+
+The equation would be (some constant) + n * n = O(n^2)
